@@ -119,7 +119,7 @@ namespace CommonTools
             }
         }
     }
-    namespace ConsoleOut
+    namespace ConsoleShortCuts
     {
         public partial class C
         {
