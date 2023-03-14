@@ -1,4 +1,5 @@
 ﻿using System;
+using CommonTools.ConsoleShortCuts;
 
 namespace CommonTools
 {
@@ -6,7 +7,8 @@ namespace CommonTools
     {
         public static void Main(string[] args)
         {
-
+            
+            
         }
     }
 }
