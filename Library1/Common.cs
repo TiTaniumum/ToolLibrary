@@ -6,17 +6,7 @@ namespace CommonTools
     {
         public static void Main(string[] args)
         {
-            ////////
-            ///sldkfjdjf
-            ////
-            ///
 
-            SomeMethod();
-        }
-
-        public static void SomeMethod()
-        {
-            Console.WriteLine("KLJkjdkfjf");
         }
     }
 }
