@@ -11,11 +11,12 @@ namespace CommonTools
             ////
             ///
 
-            //// SAYAT COMMIT
-            //// Ilya is genius
-            //// Ilya is genius 
-            //// Ilya is genius 
+            SomeMethod();
+        }
 
+        public static void SomeMethod()
+        {
+            Console.WriteLine("KLJkjdkfjf");
         }
     }
 }
