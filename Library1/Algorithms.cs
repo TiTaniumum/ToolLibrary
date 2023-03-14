@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CommonTools
 {
-    public partial class alg
+    public class Alg
     {
         public static int toIntParse(string num)
         {
@@ -110,7 +114,6 @@ namespace CommonTools
             }
         }
     }
-
     namespace ConsoleOut
     {
         public partial class C
