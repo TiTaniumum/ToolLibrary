@@ -1,5 +1,5 @@
 ﻿using System;
-using CommonTools.ConsoleOut;
+using CommonTools.ConsoleShortCuts;
 
 namespace CommonTools
 {
@@ -7,12 +7,8 @@ namespace CommonTools
     {
         public static void Main(string[] args)
         {
-            char ch = ' ';
-            C.In(ref ch);
-            C.Out(ch);
-            string str = "";
-            C.In(ref str);
-            C.Out(str);
+            
+            
         }
     }
 }

@@ -1,42 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace CommonTools
 {
-    public class Alg
+    public partial class Alg
     {
         public static Random rand;
-
         static Alg()
         {
             rand = new Random();
         }
-        public static int toIntParse(string num)
+        public static int ToIntParse(string num)
         {
             return int.Parse(num);
         }
-        public static float toFloatParse(string num)
+        public static float ToFloatParse(string num)
         {
             return float.Parse(num);
         }
-        public static int toIntTryParse(string message = "")
+        public static int AskUserInt(string message = "")
         {
-            float temp = -1.1f;
+            while (true)
+            {
+                Console.WriteLine(message);
+                string readAge = Console.ReadLine();
 
-            while (temp!=(int)temp) { temp = toFloatTryParse(message); }
-
-            return (int)temp;
+                if (readAge != string.Empty)
+                {
+                    if (int.TryParse(readAge, out int value))
+                    {
+                        return value;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Не число");
+                    }
+                }
+            }
         }
-        public static float toFloatTryParse(string message = "")
+        public static float AskUserFloat(string message = "")
         {
-            bool trueValue = false;
-
-            while (!trueValue)
+            while (true)
             {
                 Console.WriteLine(message);
                 string readAge = Console.ReadLine();
@@ -53,11 +67,9 @@ namespace CommonTools
                     }
                 }
             }
-
-            return -1.0f;
         }
 
-        public static void swap<T>(ref T first, ref T second)
+        public static void Swap<T>(ref T first, ref T second)
         {
             T temp = first;
             first = second;
@@ -90,7 +102,7 @@ namespace CommonTools
             return min + rand.NextDouble() % (max - (min) + 1);
         }
 
-        public static string randString(int cnt, bool isUpperRegister = false, bool firstSymbolInUpper = true)
+        public static string RandString(int cnt, bool isUpperRegister = false, bool firstSymbolInUpper = true)
         {
             string str = string.Empty;
             if (firstSymbolInUpper)
@@ -118,7 +130,105 @@ namespace CommonTools
                 if (RAND(1, chance) == chance) { array[i] = num; }
             }
         }
+        public static bool IsPointInFigure(List<Point> vertices,int x, int y, float Scale = 1f)
+        {
+            bool result = false;
+
+            for (int i = 0, j = vertices.Count - 1; i < vertices.Count; j = i++)
+            {
+
+                Point temp1 = new Point((int)(vertices[i].X * Scale), (int)(vertices[i].Y * Scale));
+                Point temp2 = new Point((int)(vertices[j].X * Scale), (int)(vertices[j].Y * Scale));
+
+                bool isYInRange1 = (temp1.Y < temp2.Y) && (temp1.Y <= y) && (y < temp2.Y);
+                bool isYInRange2 = (temp1.Y > temp2.Y) && (temp2.Y <= y) && (y < temp1.Y);
+
+                float lenghtY = (temp2.Y - temp1.Y);
+                float DifferenceByX = x - temp1.X;
+                float MultiplingPart1 = DifferenceByX * lenghtY;
+                float lengthX = (temp2.X - temp1.X);
+                float DifferenceByY = (y - temp1.Y);
+                float MultiplingPart2 = lengthX * DifferenceByY;
+
+
+                if ((isYInRange1 && (MultiplingPart1 >=MultiplingPart2))||(isYInRange2 && (MultiplingPart1 <= MultiplingPart2)))
+                {
+                    result = !result;
+                }
+            }
+            return result;
+        }
+
+        public static bool IsPointInFigure(List<Vector2> vertices, int x, int y, float Scale = 1f)
+        {
+            bool result = false;
+
+            for (int i = 0, j = vertices.Count - 1; i < vertices.Count; j = i++)
+            {
+
+                Vector2 temp1 = new Vector2(vertices[i].X * Scale, vertices[i].Y * Scale);
+                Vector2 temp2 = new Vector2(vertices[j].X * Scale, vertices[j].Y * Scale);
+
+                bool isYInRange1 = (temp1.Y < temp2.Y) && (temp1.Y <= y) && (y < temp2.Y);
+                bool isYInRange2 = (temp1.Y > temp2.Y) && (temp2.Y <= y) && (y < temp1.Y);
+
+                float lenghtY = (temp2.Y - temp1.Y);
+                float DifferenceByX = x - temp1.X;
+                float MultiplingPart1 = DifferenceByX * lenghtY;
+                float lengthX = (temp2.X - temp1.X);
+                float DifferenceByY = (y - temp1.Y);
+                float MultiplingPart2 = lengthX * DifferenceByY;
+
+
+                if ((isYInRange1 && (MultiplingPart1 >=MultiplingPart2))||(isYInRange2 && (MultiplingPart1 <= MultiplingPart2)))
+                {
+                    result = !result;
+                }
+            }
+            return result;
+        }
     }
+
+    public partial class ConsoleProperties
+    {
+        // Define the SetConsoleFullScreen function from kernel32.dll
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        public static void SetConsoleFullScreen()
+        {
+            // Get the handle to the console window
+            IntPtr hWndConsole = GetConsoleWindow();
+
+            // Get the size of the desktop
+            RECT desktopRect;
+            GetWindowRect(GetDesktopWindow(), out desktopRect);
+
+            // Set the console window to fullscreen
+            SetWindowPos(hWndConsole, IntPtr.Zero, desktopRect.Left, desktopRect.Top, desktopRect.Right, desktopRect.Bottom, 0x0040);
+
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetDesktopWindow();
+    }
+
     namespace ConsoleShortCuts
     {
         public partial class C
@@ -321,9 +431,5 @@ namespace CommonTools
                 item = Console.ReadLine();
             }
         }
-    }
-    namespace Patterns
-    {
-        //some patterns will be written here
     }
 }
