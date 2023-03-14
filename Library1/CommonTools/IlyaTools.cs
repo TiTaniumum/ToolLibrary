@@ -110,4 +110,15 @@ namespace CommonTools
             }
         }
     }
+
+    namespace ConsoleOut
+    {
+        public partial class C
+        {
+            public static void Out(string str)
+            {
+                Console.WriteLine(str);
+            }
+        }
+    }
 }

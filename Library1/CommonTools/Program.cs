@@ -1,4 +1,5 @@
 ﻿using System;
+using CommonTools.ConsoleOut;
 
 namespace CommonTools
 {
@@ -6,7 +7,7 @@ namespace CommonTools
     {
         public static void Main(string[] args)
         {
-
+            C.Out("hello world");
         }
     }
 }
