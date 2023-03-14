@@ -2,7 +2,7 @@
 
 namespace CommonTools
 {
-    class alg
+    public partial class alg
     {
         public static int toIntParse(string num)
         {
